@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Todo</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%233b5bdb'/%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>Todo</h1>
+      <p class="summary" id="summary" aria-live="polite"></p>
+    </header>
+
+    <form class="card new-todo" id="new-todo-form" autocomplete="off">
+      <label class="visually-hidden" for="new-todo-text">New task</label>
+      <input id="new-todo-text" class="new-todo-text" type="text" placeholder="What needs to be done?" maxlength="200" required>
+      <div class="new-todo-options">
+        <label class="field">
+          <span>Due</span>
+          <input id="new-todo-due" type="date">
+        </label>
+        <label class="field">
+          <span>Priority</span>
+          <select id="new-todo-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary">Add task</button>
+      </div>
+    </form>
+
+    <section class="card list-card" aria-label="Tasks">
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Show">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">All <span class="count"></span></button>
+          <button type="button" class="filter" data-filter="active" aria-pressed="false">Active <span class="count"></span></button>
+          <button type="button" class="filter" data-filter="completed" aria-pressed="false">Done <span class="count"></span></button>
+        </div>
+        <div class="toolbar-right">
+          <input type="search" id="search" class="search" placeholder="Search" aria-label="Search tasks">
+          <label class="field field-inline">
+            <span>Sort</span>
+            <select id="sort">
+              <option value="manual">Added</option>
+              <option value="due">Due date</option>
+              <option value="priority">Priority</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="bulk">
+        <label class="toggle-all">
+          <input type="checkbox" id="toggle-all">
+          <span>Mark all done</span>
+        </label>
+        <button type="button" id="clear-completed" class="btn btn-quiet" hidden>Clear done</button>
+      </div>
+
+      <ul class="todo-list" id="todo-list"></ul>
+      <p class="empty" id="empty-state" hidden></p>
+    </section>
+
+    <p class="hint">Double-click a task to edit · <kbd>N</kbd> new task · <kbd>/</kbd> search</p>
+  </main>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span id="toast-message"></span>
+    <button type="button" id="toast-undo" class="btn btn-quiet">Undo</button>
+  </div>
+
+  <template id="todo-item-template">
+    <li class="todo">
+      <input type="checkbox" class="todo-toggle">
+      <div class="todo-body">
+        <span class="todo-text"></span>
+        <div class="todo-meta">
+          <span class="badge priority"></span>
+          <time class="due"></time>
+        </div>
+      </div>
+      <div class="todo-actions">
+        <button type="button" class="icon-btn" data-action="edit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z M13.5 6.5l4 4"/></svg>
+        </button>
+        <button type="button" class="icon-btn icon-btn-danger" data-action="delete">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <template id="todo-edit-template">
+    <li class="todo editing">
+      <form class="edit-form" autocomplete="off">
+        <input class="edit-text" name="text" type="text" maxlength="200" aria-label="Task">
+        <div class="edit-options">
+          <input class="edit-due" name="due" type="date" aria-label="Due date">
+          <select class="edit-priority" name="priority" aria-label="Priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <span class="spacer"></span>
+          <button type="button" class="btn btn-quiet" data-action="cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </li>
+  </template>
+
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A small, dependency-free todo app that runs straight from index.html.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
